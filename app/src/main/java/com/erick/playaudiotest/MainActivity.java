@@ -1,12 +1,18 @@
 package com.erick.playaudiotest;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +36,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnPlay.setOnClickListener(this);
         btnStop.setOnClickListener(this);
 
-        initPlayer();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        } else {
+            initPlayer();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode){
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    initPlayer();
+                } else {
+                    Toast.makeText(this,"You denied Permission",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
     }
 
     private void initPlayer() {
