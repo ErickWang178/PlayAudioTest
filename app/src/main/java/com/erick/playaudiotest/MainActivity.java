@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     initPlayer();
                 } else {
-                    Toast.makeText(this,"You denied Permission",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"You denied the Permission",Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
